@@ -1,2 +1,1 @@
-# HRMS
-Human resource management softwere
+Human resource management system
