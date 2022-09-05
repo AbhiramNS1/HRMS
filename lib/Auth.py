@@ -1,5 +1,9 @@
 from genericpath import exists
-import urllib.request,json,threading
+import json,threading
+from urllib import parse,request
+
+WEBSITE_LINK='https://cakehouse.co.in/hr-management/apis/main.php'
+
 # from cryptography.fernet import Fernet
 
 # def encrypt(message: bytes, key: bytes):
@@ -9,9 +13,12 @@ import urllib.request,json,threading
 #     return Fernet(key).decrypt(token)
 
 def fetch(link):
-    with urllib.request.urlopen(link) as url:
-        data = json.loads(url.read().decode())
-        return data
+    with request.urlopen(link) as url:
+        if url:=url.read().decode():
+            return json.loads(url)
+
+def post(link,data:dict)->dict:return fetch(request.Request(link,data=parse.urlencode(data).encode()))
+
 
 def setNewToken(token):
     with open('.techtok4u','w') as file:
@@ -24,7 +31,7 @@ def getToken()->str:
 def AuthenticateUser(username,password,callback=None):
     def get():
         try:
-            data=fetch(f"https://cakehouse.co.in/hr-management/apis/main.php?username={username}&password={password}")
+            data=post(WEBSITE_LINK,{'username':username,'password':password})
             sucess='status' in data.keys() and data['status']
             if(sucess):
                 setNewToken(data['token'])
@@ -32,4 +39,6 @@ def AuthenticateUser(username,password,callback=None):
         except:
             print('--implement the new thread access to tlc widndow')
     threading.Thread(target=get).start()
+def MarkAttendence(token):
+    return post(WEBSITE_LINK,{'mark_attendence':1,'token':token})
    

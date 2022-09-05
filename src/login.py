@@ -1,6 +1,6 @@
 from src.Home import Home
 from lib.Auth import AuthenticateUser
-from lib.ImageAsset import resource
+from lib.Assets import resource
 from lib.ScreenShot import takeScreenShot
 from tkinter import *
 

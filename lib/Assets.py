@@ -1,4 +1,6 @@
 import sys,os
+
+ 
 def resource(relpath):
     try:
         base_path=sys._MEIPASS
