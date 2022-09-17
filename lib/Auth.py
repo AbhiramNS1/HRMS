@@ -17,7 +17,8 @@ def fetch(link):
         if url:=url.read().decode():
             return json.loads(url)
 
-def post(link,data:dict)->dict:return fetch(request.Request(link,data=parse.urlencode(data).encode()))
+def post(link,data:dict)->dict:
+    return fetch(request.Request(link,data=parse.urlencode(data).encode()))
 
 
 def setNewToken(token):

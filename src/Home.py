@@ -11,8 +11,6 @@ def TopBar(parent):
 class TopBar():
     def __init__(self,parent:Tk):
         self.font='Microsoft YaHei UI Light'
-       
-
         self.root=Frame(parent)
         self.root.pack(padx=4,pady=4)
         global logoimg
@@ -38,6 +36,9 @@ class TopBar():
 class SideBar():
     def __init__(self,parent:Tk):
         Frame(parent,width=300,height=parent.winfo_screenheight(),bg='blue').pack(anchor='w')
+
+def Button(root):
+    button=Frame(root)
 
 
 
