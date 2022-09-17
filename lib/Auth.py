@@ -41,4 +41,4 @@ def AuthenticateUser(username,password,callback=None):
     threading.Thread(target=get).start()
 def MarkAttendence(token):
     return post(WEBSITE_LINK,{'mark_attendence':1,'token':token})
-   
+    

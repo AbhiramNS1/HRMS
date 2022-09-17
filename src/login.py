@@ -3,6 +3,7 @@ from lib.Auth import AuthenticateUser
 from lib.Assets import resource
 from lib.ScreenShot import takeScreenShot
 from tkinter import *
+from datetime import datetime
 
 
 
@@ -69,7 +70,10 @@ class Login():
         #implement basic email and password validation here
         def Show(status):
             self.root.destroy()
-            if(status):Home(self.parent)
+            if(status):
+                Home(self.parent)
+
+                
 
         AuthenticateUser(username,password,Show)
 
