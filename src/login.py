@@ -1,4 +1,4 @@
-from src.Home import Home
+from src.Home import  HomeApp
 from lib.Auth import AuthenticateUser
 from lib.Assets import resource
 from lib.ScreenShot import takeScreenShot
@@ -9,7 +9,6 @@ from datetime import datetime
 
 class Login():
     def __init__(self,parent:Tk ):
-            
         self.root=Frame(parent,width=1000,height=700,bg='white')
         self.root.grid(row=0,column=0)
         self.parent=parent
@@ -69,9 +68,10 @@ class Login():
         password=self.code.get()
         #implement basic email and password validation here
         def Show(status):
-            self.root.destroy()
-            if(status):
-                Home(self.parent)
+            # print(status)
+            # self.root.destroy()
+            # if(status):
+            HomeApp()
 
                 
 

@@ -1,7 +1,7 @@
 import ctypes
 import sys
 from tkinter import *
-from src.Home import Home
+from src.Home import HomeApp
 from lib.Auth import getToken
 from src.login import Login
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
@@ -11,10 +11,11 @@ def isAdmin(): return ctypes.windll.shell32.IsUserAnAdmin()
 
 class App():
     def __init__(self):
-        root=Tk()
-        if((token:=getToken()) and len(token)==32):Home(root)
-        else:Login(root)
-        root.mainloop()
+        # root=Tk()
+        HomeApp()
+        # if((token:=getToken()) and len(token)==32):HomeApp()
+        # else:Login(root)
+        # root.mainloop()
 
 
 if __name__=='__main__':

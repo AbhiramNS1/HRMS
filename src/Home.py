@@ -1,60 +1,146 @@
-from ctypes import windll
-from logging import root
-from lib.Assets import  resource
-from tkinter import *
-from lib.ScreenShot import takeScreenShot
-import requests
-from datetime import datetime
 
+import PyQt5.QtWidgets as qw
+import PyQt5.QtGui as gui
+import PyQt5.QtCore
+from lib.Assets import resource
 
-def TopBar(parent):
-    Frame(parent)
+class Main(qw.QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle('HRMS')
+        self.setWindowIcon(gui.QIcon(resource('assets/logo.png')))
+        self.setLayout(qw.QVBoxLayout())
+        self.setMinimumSize(1200,800)
+        self.layout().setSpacing(0)
+        self.layout().setContentsMargins(0,0,0,0) #making the default margin to 0
+        self.layout().addWidget(Main.CreateTopBar())
 
-class TopBar():
-    def __init__(self,parent:Tk):
-        self.font='Microsoft YaHei UI Light'
-        self.root=Frame(parent)
-        self.root.pack(padx=4,pady=4)
-        global logoimg
-        logoimg=PhotoImage(file=resource("./assets/minilogo.png"))
-        Label(self.root,image=logoimg).grid(row=0,column=0,ipady=10,padx=15)
+        mainFrame=qw.QFrame()
+        mainFrame.setLayout(qw.QHBoxLayout())
+        mainFrame.layout().setContentsMargins(0,0,0,0)
+        mainFrame.layout().setSpacing(0)
+        mainFrame.layout().addWidget(Main.SideNavPanel(),1)
+        mainFrame.layout().addWidget(Main.HomePanel(),3)
 
-        Label(self.root,text='HRMS',font=(self.font,25,'bold')).grid(row=0,column=1)
-
-        Frame(self.root,width=self.root.winfo_screenwidth()-750).grid(column=2,row=0)
-
-
-        global userimg
-        userimg=PhotoImage(file=resource("./assets/userimg.png"))
-        Label(self.root,image=userimg).grid(row=0,column=3,padx=30)
-
-        Label(self.root,text='tecktok4u@tech.in',font=(self.font,10)).grid(row=0,column=4)
-
-        self.butt=Button(self.root,text='logout',width=10,pady=1,bg='#57a1f8', fg='white',font=('Microsoft YaHei UI Light',10,'bold'), border=0)
-        self.butt.grid(row=0,column=5,padx=25)
-        self.butt.bind('<Enter>',lambda e :self.butt.configure(bg='#0765D3'))
-        self.butt.bind('<Leave>',lambda e:self.butt.configure(bg='#57a1f8'))
-
-class SideBar():
-    def __init__(self,parent:Tk):
-        Frame(parent,width=300,height=parent.winfo_screenheight(),bg='blue').pack(anchor='w')
-
-def Button(root):
-    button=Frame(root)
+        self.layout().addWidget(mainFrame)
 
 
 
-class Home():
-    def __init__(self,parent:Tk):
-        self.parent=parent
-        parent.title('Home')
-        parent.geometry(f'{parent.winfo_screenwidth()-100}x{parent.winfo_screenheight()-100}+50-25')
-        parent.configure(bg="#fff")
-        parent.resizable(False,False)
+        self.show()
+    def CreateTopBar():
+        TopBar=qw.QFrame()
+        TopBar.setMaximumHeight(100)
+        TopBar.setMinimumHeight(100)
+        layout=qw.QHBoxLayout()
+        
+        
 
- 
+        #adding icon 
+        icon=gui.QPixmap(resource('assets/logo.png'))
+        icon=icon.scaled(60,60)
+        label=qw.QLabel()
+        label.setPixmap(icon)
+        label.setStyleSheet("margin-left:20px")
+        layout.addWidget(label)
 
-        self.root=Frame(parent)
-        self.root.pack(padx=4,pady=4)
-        TopBar(self.root)
-        SideBar(self.root)
+        heading =qw.QLabel('HRMS')
+        heading.setFont(gui.QFont("Helvatica",20))
+        layout.addWidget(heading)
+        heading.setStyleSheet("margin-left:7px")
+
+        layout.addStretch()
+
+        Image=gui.QPixmap(resource('admin.jpg'))
+        Image=Image.scaled(50,50)
+        imagelabel=qw.QLabel()
+        imagelabel.setPixmap(Image)
+        email=qw.QLabel('hrmsadmin@techtok4u.com')
+        email.setStyleSheet('margin-right:20px')
+        email.setFont(gui.QFont("Helvatica",10))
+        layout.addWidget(imagelabel)
+        layout.addWidget(email)
+
+        layout.addWidget(qw.QPushButton('logout'))
+        TopBar.setStyleSheet("""
+        QFrame{
+            background-color:#D9D9D9;
+        }
+        """)
+        TopBar.setLayout(layout)
+        return TopBar
+    def SideNavPanel():
+        def Element(icon:str,text:str):
+            button=qw.QPushButton('   '+text)
+            button.setIcon(gui.QIcon(resource('assets/'+icon)))
+            button.setIconSize(PyQt5.QtCore.QSize(35,35))
+            button.setStyleSheet("""
+            QPushButton{
+                background-color:#0085FF;
+                height:60;
+                border:none;
+                color:white;
+                text-align:left;
+                padding-left:20px;
+                font-size:21px;
+                font-weight:300;
+                line-height:100;
+            }
+            QPushButton:hover{
+                background-color:#0065C2;
+            }
+            """)
+            return button
+        panel=qw.QFrame()
+        
+        layout=qw.QVBoxLayout()
+        layout.setSpacing(0)
+        
+        layout.setContentsMargins(0,0,0,0)
+        layout.addWidget(Element('dashboard.png','Dashboard'))
+        layout.addWidget(Element('account_box.png','Attendence'))
+        layout.addWidget(Element('settings.png','Settings'))
+        layout.addWidget(Element('messages.png','Messages'))
+
+        spacer=qw.QFrame()
+        spacer.setLayout(qw.QHBoxLayout())
+        textlabel=qw.QLabel('Admin')
+        textlabel.setFont(gui.QFont("Helvatica",13))
+        spacer.layout().addWidget(textlabel)
+        spacer.setStyleSheet('background-color:black;color:white;height:30px;')
+        layout.addWidget(spacer)
+        layout.addWidget(Element('group.png','Attendence'))
+        layout.addWidget(Element('timetrack.png','TimeTracking'))
+        layout.addWidget(Element('screenshot.png','ScreenShots'))
+        layout.addWidget(Element('account_circle.png','Employee'))
+        layout.addWidget(Element('teams.png','Teams'))
+        layout.addWidget(Element('chat_bubble.png','Feedbacks'))
+        layout.addWidget(Element('chat.png','Messages'))
+
+
+
+        layout.addStretch()
+        
+        
+        panel.setMaximumWidth(380)
+        panel.setStyleSheet("""
+        QFrame{
+            background-color:#0085FF;
+        }
+        """)
+        panel.setLayout(layout)
+        return panel
+
+    def HomePanel():
+        panel=qw.QFrame()
+        layout=qw.QVBoxLayout()
+        panel.setStyleSheet("background-color:#CFCFCF")
+        panel.setLayout(layout)
+        return panel
+
+        
+
+
+def HomeApp():
+    app=qw.QApplication([])
+    mv=Main()
+    app.exec_()
